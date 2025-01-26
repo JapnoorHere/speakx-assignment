@@ -1,5 +1,7 @@
 ﻿# speakx-assignment
 
+Hosted website - https://speakx-assignment-eta.vercel.app/
+
 Installation
 <h4>Backend Setup</h4>
 <ul>

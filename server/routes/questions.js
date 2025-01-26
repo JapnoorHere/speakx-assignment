@@ -3,7 +3,6 @@ const Question = require('../models/Question');
 
 const router = express.Router();
 
-// API to fetch paginated and filtered questions
 router.get('/', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
@@ -36,7 +35,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Search endpoint for real-time queries
 router.get('/search', async (req, res) => {
     const query = req.query.q || '';
     const type = req.query.type || '';

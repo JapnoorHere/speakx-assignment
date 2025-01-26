@@ -13,7 +13,7 @@ const Home = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
 
-    const questionsPerPage = 12;
+    const questionsPerPage = 10;
 
     
     const categoryColors = {
@@ -58,7 +58,7 @@ const Home = () => {
     const currentColors = categoryColors[selectedType] || categoryColors.All;
 
     const fetchQuestions = useCallback(async () => {
-        setLoading(true);
+        // setLoading(true);
         try {
             const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/questions`, {
                 params: {
@@ -73,7 +73,7 @@ const Home = () => {
         } catch (error) {
             console.error("Error fetching questions:", error);
         }
-        setLoading(false);
+        // setLoading(false);
     }, [currentPage, selectedType, searchQuery]);
 
     useEffect(() => {

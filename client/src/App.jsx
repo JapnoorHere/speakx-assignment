@@ -15,6 +15,7 @@ const Home = () => {
 
     const questionTypes = ['All', 'MCQ', 'ANAGRAM', 'CONVERSATION', 'READ_ALONG', 'CONTENT_ONLY'];
 
+    // Category-specific background colors
     const categoryColors = {
         All: {
             bg: 'bg-blue-100',
@@ -106,7 +107,7 @@ const Home = () => {
             <h1 className={`text-4xl font-bold text-center ${currentColors.text} mb-6`}>QuestSearch</h1>
 
             <SearchBox 
-                onSearch={{handleSearch}} 
+                onSearch={handleSearch} 
                 className={`w-full border-2 rounded-lg p-3 ${currentColors.border} focus:ring-2 focus:ring-opacity-50`}
             />
 
@@ -133,14 +134,14 @@ const Home = () => {
                             <div className="flex justify-center mt-6 space-x-4 items-center">
                                 <button 
                                     onClick={prevPage} 
-                                    className={`px-4 py-2 rounded-lg border ${currentColors.border} bg-white ${currentColors.text} cursor-pointer transition-all hover:scale-110`}
+                                    className={`px-4 py-2 rounded-lg border ${currentColors.border} bg-white ${currentColors.text} cursor-pointer hover:scale-110 transition-all`}
                                 >
                                     Prev
                                 </button>
                                 <span className="text-lg">{currentPage}/{Math.ceil(filteredQuestions.length / questionsPerPage)}</span>
                                 <button 
                                     onClick={nextPage} 
-                                    className={`px-4 py-2 rounded-lg border ${currentColors.border} bg-white ${currentColors.text} cursor-pointer transition-all hover:scale-110`}
+                                    className={`px-4 py-2 rounded-lg border ${currentColors.border} bg-white ${currentColors.text} cursor-pointer hover:scale-110 transition-all`}
                                 >
                                     Next
                                 </button>

@@ -3,12 +3,20 @@ const Question = require('../models/Question');
 
 const router = express.Router();
 
+const fetchAllQuestions = async () => {
+    try {
+        questionCache = await Question.find();
+        console.log(`Loaded ${questionCache.length} questions into cache.`);
+    } catch (error) {
+        console.error('Error fetching questions:', error);
+    }
+};
 
+fetchAllQuestions();
 
 router.get('/', async (req, res) => {
     try {
         const questions = await Question.find();
-        console.log(questions);
         res.json(questions);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching questions', error });
@@ -26,8 +34,7 @@ router.get('/search', async (req, res) => {
             searchQuery.type = type;
         }
 
-        const questions = await Question.find(searchQuery).limit(10);
-        
+        const questions = await Question.find(searchQuery)
         res.json(questions);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching questions', error });

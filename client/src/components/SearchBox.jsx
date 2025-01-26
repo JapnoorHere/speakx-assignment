@@ -24,15 +24,7 @@ const SearchBox = ({ onSearch }) => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
             />
-            {query && (
-                <button
-                    onClick={() => setQuery('')}
-                    className="text-gray-500 hover:text-gray-700 pr-4"
-                    aria-label="Clear search"
-                >
-                    ✖
-                </button>
-            )}
+            
         </div>
     );
 };

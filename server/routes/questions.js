@@ -3,43 +3,55 @@ const Question = require('../models/Question');
 
 const router = express.Router();
 
-const fetchAllQuestions = async () => {
-    try {
-        questionCache = await Question.find();
-        console.log(`Loaded ${questionCache.length} questions into cache.`);
-    } catch (error) {
-        console.error('Error fetching questions:', error);
-    }
-};
-
-fetchAllQuestions();
-
+// API to fetch paginated and filtered questions
 router.get('/', async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const type = req.query.type || '';
+    const search = req.query.search || '';
+
     try {
-        const questions = await Question.find();
-        res.json(questions);
+        let query = {};
+
+        if (type) {
+            query.type = type;
+        }
+
+        if (search) {
+            query.title = { $regex: search, $options: 'i' };
+        }
+
+        const totalQuestions = await Question.countDocuments(query);
+        const questions = await Question.find(query)
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        res.json({
+            questions,
+            totalPages: Math.ceil(totalQuestions / limit),
+            currentPage: page,
+        });
     } catch (error) {
         res.status(500).json({ message: 'Error fetching questions', error });
     }
 });
 
+// Search endpoint for real-time queries
 router.get('/search', async (req, res) => {
     const query = req.query.q || '';
-    const type = req.query.type || 'All';
+    const type = req.query.type || '';
 
     try {
         let searchQuery = { title: new RegExp(query, 'i') };
-
-        if (type !== 'All') {
+        if (type) {
             searchQuery.type = type;
         }
 
-        const questions = await Question.find(searchQuery)
+        const questions = await Question.find(searchQuery);
         res.json(questions);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching questions', error });
+        res.status(500).json({ message: 'Error searching questions', error });
     }
 });
-
 
 module.exports = router;

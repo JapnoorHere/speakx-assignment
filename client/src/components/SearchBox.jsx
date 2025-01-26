@@ -7,8 +7,11 @@ const SearchBox = ({ onSearch }) => {
         const delayDebounce = setTimeout(() => {
             if (query.trim()) {
                 onSearch(query);
+            } else {
+                onSearch('');
             }
         }, 500);
+
         return () => clearTimeout(delayDebounce);
     }, [query, onSearch]);
 
@@ -17,10 +20,19 @@ const SearchBox = ({ onSearch }) => {
             <input
                 type="text"
                 placeholder="🔍 Search questions..."
-                className="flex-1 bg-transparent outline-none px-6 py-3 text-gray-700 placeholder-gray-400 text-lg  focus:ring-0"
+                className="flex-1 bg-transparent outline-none px-6 py-3 text-gray-700 placeholder-gray-400 text-lg focus:ring-0"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
             />
+            {query && (
+                <button
+                    onClick={() => setQuery('')}
+                    className="text-gray-500 hover:text-gray-700 pr-4"
+                    aria-label="Clear search"
+                >
+                    ✖
+                </button>
+            )}
         </div>
     );
 };

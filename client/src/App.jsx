@@ -15,50 +15,19 @@ const Home = () => {
 
     const questionsPerPage = 10;
 
-    
     const categoryColors = {
-        All: {
-            bg: 'bg-blue-100',
-            text: 'text-blue-700',
-            border: 'border-blue-500',
-            darkBg: 'bg-blue-500'
-        },
-        MCQ: {
-            bg: 'bg-yellow-100',
-            text: 'text-yellow-700',
-            border: 'border-yellow-500',
-            darkBg: 'bg-yellow-500'
-        },
-        ANAGRAM: {
-            bg: 'bg-purple-100',
-            text: 'text-purple-700',
-            border: 'border-purple-500',
-            darkBg: 'bg-purple-500'
-        },
-        READ_ALONG: {
-            bg: 'bg-orange-100',
-            text: 'text-orange-700',
-            border: 'border-orange-500',
-            darkBg: 'bg-orange-500'
-        },
-        CONTENT_ONLY: {
-            bg: 'bg-gray-100',
-            text: 'text-gray-700',
-            border: 'border-gray-500',
-            darkBg: 'bg-gray-500'
-        },
-        CONVERSATION: {
-            bg: 'bg-teal-100',
-            text: 'text-teal-700',
-            border: 'border-teal-500',
-            darkBg: 'bg-teal-500'
-        }
+        All: { bg: 'bg-blue-100', text: 'text-blue-700', border: 'border-blue-500', darkBg: 'bg-blue-500' },
+        MCQ: { bg: 'bg-yellow-100', text: 'text-yellow-700', border: 'border-yellow-500', darkBg: 'bg-yellow-500' },
+        ANAGRAM: { bg: 'bg-purple-100', text: 'text-purple-700', border: 'border-purple-500', darkBg: 'bg-purple-500' },
+        READ_ALONG: { bg: 'bg-orange-100', text: 'text-orange-700', border: 'border-orange-500', darkBg: 'bg-orange-500' },
+        CONTENT_ONLY: { bg: 'bg-gray-100', text: 'text-gray-700', border: 'border-gray-500', darkBg: 'bg-gray-500' },
+        CONVERSATION: { bg: 'bg-teal-100', text: 'text-teal-700', border: 'border-teal-500', darkBg: 'bg-teal-500' }
     };
 
     const currentColors = categoryColors[selectedType] || categoryColors.All;
 
     const fetchQuestions = useCallback(async () => {
-        // setLoading(true);
+        setLoading(true);
         try {
             const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/questions`, {
                 params: {
@@ -73,7 +42,7 @@ const Home = () => {
         } catch (error) {
             console.error("Error fetching questions:", error);
         }
-        // setLoading(false);
+        setLoading(false);
     }, [currentPage, selectedType, searchQuery]);
 
     useEffect(() => {
@@ -103,38 +72,30 @@ const Home = () => {
         if (currentPage > 1) {
             setCurrentPage(prev => prev - 1);
         }
-    }; return (
-        <div className={`p-8 max-w-screen min-h-screen mx-auto ${currentColors.bg} relative`}>
-            <h1 className={`text-4xl font-bold text-center ${currentColors.text} mb-6`}>QuestSearch</h1>
+    };
 
+    return (
+        <div className={`p-8 max-w-screen min-h-screen mx-auto ${currentColors.bg} relative`}>
+            {loading && <Loader />}
+            <h1 className={`text-4xl font-bold text-center ${currentColors.text} mb-6`}>QuestSearch</h1>
             <SearchBox
                 onSearch={(query) => handleSearch(query)}
                 className={`w-full border-2 rounded-lg p-3 ${currentColors.border} focus:ring-2 focus:ring-opacity-50`}
             />
-
             <FilterBar
                 types={['All', 'MCQ', 'ANAGRAM', 'CONVERSATION', 'READ_ALONG', 'CONTENT_ONLY']}
                 selectedType={selectedType}
                 onSelectType={filterByType}
             />
-
             <div className="mt-24">
-                {loading ? (
-                    <Loader />
+                {questions.length > 0 ? (
+                    questions.map((q, index) => (
+                        <QuestionCard key={index} question={q} index={index + 1} />
+                    ))
                 ) : (
-                    <div className="mt-4 mb-8">
-                        {questions.length > 0 ? (
-                            questions.map((q, index) => (
-                                <QuestionCard key={index} question={q} index={index + 1} />
-                            ))
-                        ) : (
-                            <p className="text-red-500 mt-4 text-center">No questions found.</p>
-                        )}
-                    </div>
+                    <p className="text-red-500 mt-4 text-center">No questions found.</p>
                 )}
             </div>
-
-            {/* Fixed pagination bar */}
             <div className={`fixed m-auto bottom-0 rounded-t-xl left-0 right-0 ${currentColors.darkBg} shadow-md p-2 flex justify-center items-center`}>
                 <button
                     onClick={prevPage}

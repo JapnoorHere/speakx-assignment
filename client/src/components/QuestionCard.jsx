@@ -1,4 +1,5 @@
 const QuestionCard = ({ question, index }) => {
+    
     const blocks = Array.isArray(question.blocks) ? question.blocks : [];
 
     const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);

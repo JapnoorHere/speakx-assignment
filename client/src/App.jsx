@@ -87,7 +87,7 @@ const Home = () => {
                 selectedType={selectedType}
                 onSelectType={filterByType}
             />
-            <div className="mt-24">
+            <div className="mt-24 mb-12">
                 {questions.length > 0 ? (
                     questions.map((q, index) => (
                         <QuestionCard key={index} question={q} index={index + 1} />

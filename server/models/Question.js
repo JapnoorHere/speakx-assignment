@@ -11,7 +11,7 @@ const questionSchema = new mongoose.Schema({
             text: String,
             isCorrectAnswer: Boolean
         }
-    ], 
+    ],
     answer: String,
     createdAt: {
         type: Date,

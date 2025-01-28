@@ -35,21 +35,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// router.get('/search', async (req, res) => {
-//     const query = req.query.q || '';
-//     const type = req.query.type || '';
 
-//     try {
-//         let searchQuery = { title: new RegExp(query, 'i') };
-//         if (type) {
-//             searchQuery.type = type;
-//         }
-
-//         const questions = await Question.find(searchQuery);
-//         res.json(questions);    
-//     } catch (error) {
-//         res.status(500).json({ message: 'Error searching questions', error });
-//     }
-// });
 
 module.exports = router;
